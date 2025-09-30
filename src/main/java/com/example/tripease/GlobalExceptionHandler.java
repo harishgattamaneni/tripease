@@ -1,8 +1,6 @@
 package com.example.tripease;
 
-import com.example.tripease.Exception.CabNotFoundException;
-import com.example.tripease.Exception.CustomerNotFoundException;
-import com.example.tripease.Exception.DriverNotFoundException;
+import com.example.tripease.Exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,6 +22,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DriverNotFoundException.class)
     public ResponseEntity<String> DriverNotFoundException(DriverNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(tripAlreadyEnded.class)
+    public ResponseEntity<String> tripAlreadyEnded(tripAlreadyEnded ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(tripNotEnded.class)
+    public ResponseEntity<String> tripNotEnded(tripNotEnded ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

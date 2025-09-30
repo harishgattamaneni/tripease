@@ -71,7 +71,49 @@ public class BookingService {
 
     }
     private void sendEmail(BookingResponse bookingResponse){
-        String text = "Congrats"+bookingResponse.getCustomerResponse().getName()+"/n you cab is booked and your cab details are here"+bookingResponse.getCabResponse();
+        String text = String.format("""
+    Dear %s,
+
+    Congratulations! Your cab has been successfully booked.
+
+    📍 Trip Details:
+       - Pickup Location: %s
+       - Destination: %s
+       - Distance: %.2f km
+       - Estimated Bill Amount: ₹%.2f
+       - Booking Time: %s
+
+    🚖 Cab Details:
+       - Cab Number: %s
+       - Cab Model: %s
+       - Per Km Rate: ₹%d
+
+    👨‍✈️ Driver Details:
+       - Driver ID: %d
+       - Name: %s
+       - Age: %d
+       - Email: %s
+
+    Thank you for choosing TripEase. We wish you a safe and pleasant journey!
+
+    Regards,  
+    TripEase Team
+    """,
+                bookingResponse.getCustomerResponse().getName(),
+                bookingResponse.getPickup(),
+                bookingResponse.getDestination(),
+                bookingResponse.getTripDistanceInKm(),
+                bookingResponse.getBillAmount(),
+                bookingResponse.getBookedAt(),
+                bookingResponse.getCabResponse().getCabNumber(),
+                bookingResponse.getCabResponse().getCabModel(),
+                bookingResponse.getCabResponse().getPerKmRate(),
+                bookingResponse.getCabResponse().getDriverResponse().getDriverId(),
+                bookingResponse.getCabResponse().getDriverResponse().getName(),
+                bookingResponse.getCabResponse().getDriverResponse().getAge(),
+                bookingResponse.getCabResponse().getDriverResponse().getEmailId()
+        );
+
         SimpleMailMessage simpleMailMessage=new SimpleMailMessage();
         simpleMailMessage.setFrom("benduapparao0@gmail.com");
         simpleMailMessage.setTo(bookingResponse.getCustomerResponse().getEmailId());
