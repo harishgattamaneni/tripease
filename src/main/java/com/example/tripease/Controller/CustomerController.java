@@ -23,6 +23,11 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
+    @PostMapping("/endTrip/CustomerId/{customerId}")
+    public ResponseEntity<CustomerResponse> endTrip(@PathVariable("customerId") int customerId){
+        return new ResponseEntity<>(customerService.endTrip(customerId),HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<CustomerResponse> addCustomer(@RequestBody CustomerRequest customerRequest){
         return new ResponseEntity<>(customerService.addCustomer(customerRequest), HttpStatus.CREATED);

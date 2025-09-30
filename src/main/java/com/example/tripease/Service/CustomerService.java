@@ -3,9 +3,16 @@ package com.example.tripease.Service;
 import com.example.tripease.DTO.Request.CustomerRequest;
 import com.example.tripease.DTO.Response.CustomerResponse;
 import com.example.tripease.Enum.Gender;
+import com.example.tripease.Enum.TripStatus;
 import com.example.tripease.Exception.CustomerNotFoundException;
+import com.example.tripease.Exception.DriverNotFoundException;
+import com.example.tripease.Model.Booking;
+import com.example.tripease.Model.Cab;
 import com.example.tripease.Model.Customer;
+import com.example.tripease.Model.Driver;
+import com.example.tripease.Repository.BookingRepository;
 import com.example.tripease.Repository.CustomerRepository;
+import com.example.tripease.Repository.DriverRepository;
 import com.example.tripease.Transformers.CustomerTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +26,12 @@ public class CustomerService {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    BookingRepository bookingRepository;
+
+    @Autowired
+    DriverRepository driverRepository;
 
 
     public CustomerResponse getCustomer(int customerId) {
@@ -62,5 +75,21 @@ public class CustomerService {
             customerResponses.add(CustomerTransformer.customerToCutomerResponse(customer));
         }
         return customerResponses;
+    }
+
+    public CustomerResponse endTrip(int customerId) {
+        Booking booking = bookingRepository.findLatestById(customerId);
+        booking.setTripStatus(TripStatus.Completed);
+        int driverId = bookingRepository.findDriverIdByBookingId(booking.getBookingId());
+        Optional<Driver> optionalDriver = driverRepository.getDriverByDriverId(driverId);
+        if(optionalDriver.isEmpty()){
+            throw new DriverNotFoundException("driver not found");
+        }
+        Driver driver = optionalDriver.get();
+        Cab cab= driver.getCab();
+        cab.setAvailable(true);
+        driverRepository.save(driver);
+        bookingRepository.save(booking);
+        return CustomerTransformer.customerToCutomerResponse(customerRepository.findByCustomerId(customerId));
     }
 }
