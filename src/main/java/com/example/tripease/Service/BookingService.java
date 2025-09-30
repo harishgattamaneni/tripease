@@ -2,8 +2,11 @@ package com.example.tripease.Service;
 
 import com.example.tripease.DTO.Request.BookingRequest;
 import com.example.tripease.DTO.Response.BookingResponse;
+import com.example.tripease.Enum.TripStatus;
 import com.example.tripease.Exception.CabNotFoundException;
 import com.example.tripease.Exception.CustomerNotFoundException;
+import com.example.tripease.Exception.tripAlreadyEnded;
+import com.example.tripease.Exception.tripNotEnded;
 import com.example.tripease.Model.Booking;
 import com.example.tripease.Model.Cab;
 import com.example.tripease.Model.Customer;
@@ -39,6 +42,10 @@ public class BookingService {
     JavaMailSender javaMailSender;
 
     public BookingResponse bookCab(BookingRequest bookingRequest, int customerId) {
+        Booking ckeck_booking = bookingRepository.findLatestById(customerId);
+        if(ckeck_booking.getTripStatus()!= TripStatus.Completed){
+            throw new tripNotEnded("Trip for the specified customer has not yet ended");
+        }
         Optional<Customer> optionalCustomer= customerRepository.findById(customerId);
         if(optionalCustomer.isEmpty()){
             throw new CustomerNotFoundException("Invalid CustomerId");

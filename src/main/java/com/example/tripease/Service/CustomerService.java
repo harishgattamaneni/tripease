@@ -6,6 +6,7 @@ import com.example.tripease.Enum.Gender;
 import com.example.tripease.Enum.TripStatus;
 import com.example.tripease.Exception.CustomerNotFoundException;
 import com.example.tripease.Exception.DriverNotFoundException;
+import com.example.tripease.Exception.tripAlreadyEnded;
 import com.example.tripease.Model.Booking;
 import com.example.tripease.Model.Cab;
 import com.example.tripease.Model.Customer;
@@ -79,6 +80,9 @@ public class CustomerService {
 
     public CustomerResponse endTrip(int customerId) {
         Booking booking = bookingRepository.findLatestById(customerId);
+        if(booking.getTripStatus()==TripStatus.Completed){
+            throw new tripAlreadyEnded("Trip has Already ended for the current customer");
+        }
         booking.setTripStatus(TripStatus.Completed);
         int driverId = bookingRepository.findDriverIdByBookingId(booking.getBookingId());
         Optional<Driver> optionalDriver = driverRepository.getDriverByDriverId(driverId);
