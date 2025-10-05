@@ -6,9 +6,10 @@ import com.example.tripease.Model.Driver;
 import com.example.tripease.Repository.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import static com.example.tripease.Transformers.DriverTransformer.driverRequestToDriver;
 import static com.example.tripease.Transformers.DriverTransformer.driverToDriverResponse;
+
+
 @Service
 public class DriverService {
     @Autowired

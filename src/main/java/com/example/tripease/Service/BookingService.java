@@ -5,7 +5,6 @@ import com.example.tripease.DTO.Response.BookingResponse;
 import com.example.tripease.Enum.TripStatus;
 import com.example.tripease.Exception.CabNotFoundException;
 import com.example.tripease.Exception.CustomerNotFoundException;
-import com.example.tripease.Exception.tripAlreadyEnded;
 import com.example.tripease.Exception.tripNotEnded;
 import com.example.tripease.Model.Booking;
 import com.example.tripease.Model.Cab;

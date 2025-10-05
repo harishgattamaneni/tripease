@@ -3,8 +3,8 @@ package com.example.tripease.Controller;
 import com.example.tripease.DTO.Request.CustomerRequest;
 import com.example.tripease.DTO.Response.CustomerResponse;
 import com.example.tripease.Enum.Gender;
-import com.example.tripease.Model.Customer;
 import com.example.tripease.Service.CustomerService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class CustomerController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CustomerResponse> addCustomer(@RequestBody CustomerRequest customerRequest){
+    public ResponseEntity<CustomerResponse> addCustomer(@Valid @RequestBody CustomerRequest customerRequest){
         return new ResponseEntity<>(customerService.addCustomer(customerRequest), HttpStatus.CREATED);
     }
 

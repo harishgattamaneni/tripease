@@ -1,6 +1,5 @@
 package com.example.tripease.DTO.Response;
 
-
 import lombok.*;
 
 @NoArgsConstructor //default constructor - LOMBO

@@ -1,10 +1,8 @@
 package com.example.tripease.Model;
 
-
 import com.example.tripease.Enum.Gender;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
 

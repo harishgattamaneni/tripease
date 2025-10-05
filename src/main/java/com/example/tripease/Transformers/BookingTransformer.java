@@ -2,8 +2,6 @@ package com.example.tripease.Transformers;
 
 import com.example.tripease.DTO.Request.BookingRequest;
 import com.example.tripease.DTO.Response.BookingResponse;
-import com.example.tripease.DTO.Response.CabResponse;
-import com.example.tripease.DTO.Response.CustomerResponse;
 import com.example.tripease.Model.Booking;
 import com.example.tripease.Model.Cab;
 import com.example.tripease.Model.Customer;
