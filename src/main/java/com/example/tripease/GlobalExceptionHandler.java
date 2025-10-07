@@ -1,6 +1,7 @@
 package com.example.tripease;
 
 import com.example.tripease.Exception.*;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -64,5 +65,29 @@ public class GlobalExceptionHandler {
 
         // Handle other JSON parsing errors generically
         return new ResponseEntity<>("Invalid request format: " + ex.getRootCause().getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+
+        String errorMessage = ex.getMostSpecificCause().getMessage();
+
+        // 1. Check for the specific 'Duplicate entry' message
+        //    (This message format is common in MySQL/MariaDB)
+        if (errorMessage != null && errorMessage.contains("Duplicate entry") && errorMessage.contains("@")) {
+
+            // Extract the duplicated email (optional, for a cleaner message)
+            int start = errorMessage.indexOf('\'') + 1;
+            int end = errorMessage.indexOf('\'', start);
+            String duplicatedValue = errorMessage.substring(start, end);
+
+            String responseMessage = "The email '" + duplicatedValue + "' is already registered. Please use a different email.";
+
+            // 409 Conflict is often used for resource constraint violations
+            return new ResponseEntity<>(responseMessage, HttpStatus.CONFLICT);
+        }
+
+        // 2. Fallback for other Data Integrity Violations (e.g., non-null constraint failure)
+        return new ResponseEntity<>("A data integrity constraint was violated: " + errorMessage, HttpStatus.BAD_REQUEST);
     }
 }
