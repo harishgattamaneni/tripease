@@ -41,8 +41,8 @@ public class BookingService {
     JavaMailSender javaMailSender;
 
     public BookingResponse bookCab(BookingRequest bookingRequest, int customerId) {
-        Booking ckeck_booking = bookingRepository.findLatestById(customerId);
-        if(ckeck_booking.getTripStatus()!= TripStatus.Completed){
+        Booking check_booking = bookingRepository.findLatestById(customerId);
+        if(check_booking!=null && check_booking.getTripStatus()!= TripStatus.Completed){
             throw new tripNotEnded("Trip for the specified customer has not yet ended");
         }
         Optional<Customer> optionalCustomer= customerRepository.findById(customerId);
