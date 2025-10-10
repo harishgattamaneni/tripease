@@ -3,9 +3,7 @@ package com.example.tripease.Service;
 import com.example.tripease.DTO.Request.BookingRequest;
 import com.example.tripease.DTO.Response.BookingResponse;
 import com.example.tripease.Enum.TripStatus;
-import com.example.tripease.Exception.CabNotFoundException;
-import com.example.tripease.Exception.CustomerNotFoundException;
-import com.example.tripease.Exception.tripNotEnded;
+import com.example.tripease.Exception.*;
 import com.example.tripease.Model.Booking;
 import com.example.tripease.Model.Cab;
 import com.example.tripease.Model.Customer;
@@ -17,6 +15,7 @@ import com.example.tripease.Repository.DriverRepository;
 import com.example.tripease.Transformers.BookingTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -40,11 +39,14 @@ public class BookingService {
     BookingRepository bookingRepository;
 
     @Autowired
+    CustomerService customerService;
+
+    @Autowired
     JavaMailSender javaMailSender;
 
     public BookingResponse bookCab(BookingRequest bookingRequest, int customerId) {
         Booking check_booking = bookingRepository.findLatestById(customerId);
-        if(check_booking!=null && check_booking.getTripStatus()!= TripStatus.Completed){
+        if(check_booking!=null && check_booking.getTripStatus()== TripStatus.Ongoing){
             throw new tripNotEnded("Trip for the specified customer has not yet ended");
         }
         Optional<Customer> optionalCustomer= customerRepository.findById(customerId);
@@ -122,5 +124,23 @@ public class BookingService {
         simpleMailMessage.setText(text);
 
         javaMailSender.send(simpleMailMessage);
+    }
+
+    public String cancelBooking(int bookingId) {
+        Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
+        if(optionalBooking.isEmpty()){
+            throw new BookingNotFoundException("There is no booking found with given booking id");
+        }
+        Booking booking = optionalBooking.get();
+        if(booking.getTripStatus()==TripStatus.Completed){
+            throw new TripCannotBeCancelled("The booking has already ended");
+        }
+        booking.setTripStatus(TripStatus.Cancelled);
+        int driver_id = bookingRepository.findByBookingId(booking.getBookingId());
+        int cab_id = driverRepository.getCabId(driver_id);
+        Cab cab = cabRepository.findById(cab_id).get();
+        cab.setAvailable(true);
+        cabRepository.save(cab);
+        return "Booking successfully cancelled";
     }
 }

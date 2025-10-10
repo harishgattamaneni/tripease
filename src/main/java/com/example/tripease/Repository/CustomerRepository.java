@@ -32,6 +32,13 @@ public interface CustomerRepository extends JpaRepository<Customer,Integer> {
             "order by customer_avg_distance DESC",nativeQuery = true)
     List<CustomerLoyaltyScore> getCustomerLoyaltyScore();
 
+    @Query(value = "select customer_info.first_name " +
+            "from customer_info " +
+            "left join booking on customer_info.customer_id=booking.customer_id " +
+            "group by customer_info.first_name,customer_info.customer_id " +
+            "having count(booking.booking_id)=0", nativeQuery = true)
+    List<String> customersNeverBooked();
+
 //    @Query(value = "select * from customer_info where gender= :gender and age> :age",
 //            nativeQuery = true)//HQL - hybernate quesry language
 //    List<Customer> findByGenderAndAgeGreaterThan(@Param("gender") String gender,

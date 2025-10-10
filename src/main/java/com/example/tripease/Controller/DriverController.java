@@ -51,4 +51,9 @@ public class DriverController {
     public ResponseEntity<BestMatchDto> bestMatch(){
         return new ResponseEntity<>(driverService.bestMatch(),HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete-driver/driverId/{driver_id}")
+    public ResponseEntity<String> deleteDriver(@PathVariable("driver_id") int driver_id){
+        return new ResponseEntity<>(driverService.deleteDriver(driver_id),HttpStatus.OK);
+    }
 }

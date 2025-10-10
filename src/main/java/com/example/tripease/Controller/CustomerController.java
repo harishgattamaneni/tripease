@@ -60,4 +60,9 @@ public class CustomerController {
     public ResponseEntity<List<CustomerLoyaltyScore>> getCustomerLoyaltyScore(){
         return new ResponseEntity<>(customerService.getCustomerLoyaltyScore(), HttpStatus.OK);
     }
+
+    @GetMapping("/never_booked")
+    public ResponseEntity<List<String>> customersNeverBooked(){
+        return new ResponseEntity<>(customerService.customersNeverBooked(),HttpStatus.OK);
+    }
 }

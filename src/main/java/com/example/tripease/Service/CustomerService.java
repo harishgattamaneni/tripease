@@ -100,4 +100,8 @@ public class CustomerService {
     public List<CustomerLoyaltyScore> getCustomerLoyaltyScore() {
         return customerRepository.getCustomerLoyaltyScore();
     }
+
+    public List<String> customersNeverBooked() {
+        return customerRepository.customersNeverBooked();
+    }
 }

@@ -20,4 +20,10 @@ public interface BookingRepository extends JpaRepository<Booking,Integer> {
 
     @Query(value = "SELECT * FROM booking WHERE booked_at >= :date1 and booked_at <= :date2 and driver_id = :driverid", nativeQuery = true)
     List<Booking> findBookingsByDriverId(@Param("driverid")int driverid, @Param("date1")Date date1,@Param("date2")Date date2);
+
+    @Query(value = "SELECT driver_id from booking where booking_id= :booking_id",nativeQuery = true)
+    int findByBookingId(@Param("booking_id") int booking_id);
+
+    @Query(value = "SELECT count(*) from booking where driver_id = :driver_id and trip_status ='Ongoing'",nativeQuery = true)
+    int findBookingsByDriverId(@Param("driver_id") int driverId);
 }

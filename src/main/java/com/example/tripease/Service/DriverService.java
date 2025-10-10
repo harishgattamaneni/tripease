@@ -5,6 +5,7 @@ import com.example.tripease.DTO.Request.DriverRequest;
 import com.example.tripease.DTO.Response.DriverResponse;
 import com.example.tripease.DTO.TopDriverDto;
 import com.example.tripease.Exception.CabNotFoundException;
+import com.example.tripease.Exception.DriverAlreadyAssignedACab;
 import com.example.tripease.Exception.DriverNotFoundException;
 import com.example.tripease.Model.Booking;
 import com.example.tripease.Model.Cab;
@@ -82,5 +83,15 @@ public class DriverService {
 
     public BestMatchDto bestMatch() {
         return driverRepository.bestMatch();
+    }
+
+    public String deleteDriver(int driverId) {
+        int ongoing_trips =  bookingRepository.findBookingsByDriverId(driverId);
+        if(ongoing_trips>0) {
+            throw new DriverAlreadyAssignedACab("driver has some trip going on. cannot safe delete the driver");
+        }else{
+            driverRepository.delete(driverRepository.findById(driverId).get());
+        }
+        return "driver is safe deleted";
     }
 }

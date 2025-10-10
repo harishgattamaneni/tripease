@@ -46,4 +46,7 @@ public interface DriverRepository extends JpaRepository<Driver,Integer> {
             "order by cab.per_km_rate ASC, total_distance DESC " +
             "limit 1",nativeQuery = true)
     BestMatchDto bestMatch();
+
+    @Query(value = "select cab_id from driver where driver_id= :driverId",nativeQuery = true)
+    int getCabId(@Param("driverId") int driverId);
 }
