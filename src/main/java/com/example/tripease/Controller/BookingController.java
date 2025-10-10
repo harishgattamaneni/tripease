@@ -20,6 +20,5 @@ public class BookingController {
         return bookingService.bookCab(bookingRequest,customerId);
     }
 
-
 }
 

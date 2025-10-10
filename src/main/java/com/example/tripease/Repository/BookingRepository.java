@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface BookingRepository extends JpaRepository<Booking,Integer> {
     Integer findDriverIdByBookingId(@Param("bookingId") int bookingId);
 
     @Query(value = "SELECT * FROM booking WHERE booked_at >= :date1 and booked_at <= :date2 and driver_id = :driverid", nativeQuery = true)
-    List<Booking> findBookingsByDriverId(int driverid, Date date1, Date date2);
+    List<Booking> findBookingsByDriverId(@Param("driverid")int driverid, @Param("date1")Date date1,@Param("date2")Date date2);
 }

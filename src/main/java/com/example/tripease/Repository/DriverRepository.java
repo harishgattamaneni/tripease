@@ -1,10 +1,14 @@
 package com.example.tripease.Repository;
 
+import com.example.tripease.DTO.TopDriverDto;
 import com.example.tripease.Model.Driver;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,4 +19,18 @@ public interface DriverRepository extends JpaRepository<Driver,Integer> {
 
     @Query(value = "select * from driver where driver_id = :driverId",nativeQuery = true)
     Optional<Driver> getDriverByDriverId(@Param("driverId") int driverId);
+
+    @Query(value =
+            "SELECT " +
+                    "d.name AS driverName, " +
+                    "SUM(b.bill_amount) AS totalEarnings " +
+                    "FROM driver d " +
+                    "JOIN booking b ON b.driver_id = d.driver_id " +
+                    "WHERE b.trip_status = 'COMPLETED' AND b.booked_at >= :pastDate " +
+                    "GROUP BY d.driver_id, d.name " +
+                    "ORDER BY totalEarnings DESC " +
+                    "LIMIT :topN", // Efficiently restricts the result set
+            nativeQuery = true)
+    List<TopDriverDto> findTopDriversNative(@Param("pastDate") Date pastDate,
+                                            @Param("topN") int topN);
 }

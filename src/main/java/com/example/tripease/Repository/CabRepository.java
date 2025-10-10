@@ -1,13 +1,29 @@
 package com.example.tripease.Repository;
 
+import com.example.tripease.DTO.PopularCabModelDto;
 import com.example.tripease.Model.Cab;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Date;
 
 
 @Repository
 public interface CabRepository extends JpaRepository<Cab,Integer> {
     @Query(value= "SELECT * FROM cab WHERE available= 1 ORDER BY RAND() LIMIT 1",nativeQuery = true)//HQL - hybernate quesry language
     Cab getAvailableCabRandomly();
+
+    @Query(value="Select " +
+            "cab.cab_model, " +
+            "sum(booking.trip_distance_in_km) as totalDistance " +
+            "from cab " +
+            "join driver on cab.cab_id=driver.cab_id " +
+            "join booking on driver.driver_id=booking.driver_id " +
+            "where booked_at>= :pastDate " +
+            "group by cab.cab_model " +
+            "order by totalDistance DESC " +
+            "limit 1",nativeQuery = true)
+    PopularCabModelDto getPopularCarModel(@Param("pastDate") Date pastDate);
 }

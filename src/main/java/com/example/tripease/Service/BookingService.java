@@ -16,11 +16,13 @@ import com.example.tripease.Repository.CustomerRepository;
 import com.example.tripease.Repository.DriverRepository;
 import com.example.tripease.Transformers.BookingTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class BookingService {

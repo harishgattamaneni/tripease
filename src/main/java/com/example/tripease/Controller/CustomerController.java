@@ -1,5 +1,6 @@
 package com.example.tripease.Controller;
 
+import com.example.tripease.DTO.CustomerLoyaltyScore;
 import com.example.tripease.DTO.Request.CustomerRequest;
 import com.example.tripease.DTO.Response.CustomerResponse;
 import com.example.tripease.Enum.Gender;
@@ -53,5 +54,10 @@ public class CustomerController {
     public List<CustomerResponse> getAllByGenderAndAgeGreaterThan(@PathVariable("gender") Gender gender,
                                                        @PathVariable("age") int age){
         return customerService.getAllByGenderAndAgeGreaterThan(gender,age);
+    }
+
+    @GetMapping("/get-customer-loyalty-score")
+    public ResponseEntity<List<CustomerLoyaltyScore>> getCustomerLoyaltyScore(){
+        return new ResponseEntity<>(customerService.getCustomerLoyaltyScore(), HttpStatus.OK);
     }
 }

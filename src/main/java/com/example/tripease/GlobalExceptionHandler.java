@@ -25,6 +25,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(DriverAlreadyAssignedACab.class)
+    public ResponseEntity<String> DriverAlreadyAssignedACab(DriverAlreadyAssignedACab ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(DriverNotFoundException.class)
     public ResponseEntity<String> DriverNotFoundException(DriverNotFoundException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);

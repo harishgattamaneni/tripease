@@ -2,6 +2,7 @@ package com.example.tripease.Service;
 
 import com.example.tripease.DTO.Request.DriverRequest;
 import com.example.tripease.DTO.Response.DriverResponse;
+import com.example.tripease.DTO.TopDriverDto;
 import com.example.tripease.Model.Booking;
 import com.example.tripease.Model.Driver;
 import com.example.tripease.Repository.BookingRepository;
@@ -9,6 +10,7 @@ import com.example.tripease.Repository.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -36,5 +38,14 @@ public class DriverService {
             totalAmount += booking.getBillAmount();
         }
         return totalAmount;
+    }
+
+    public List<TopDriverDto> getTopEarnersNative(int topN, int daysInPast) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_YEAR, -daysInPast);
+        Date pastDate = cal.getTime();
+
+        // 2. Call the native query
+        return driverRepository.findTopDriversNative(pastDate, topN);
     }
 }

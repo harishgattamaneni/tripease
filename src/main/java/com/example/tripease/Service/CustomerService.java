@@ -1,5 +1,6 @@
 package com.example.tripease.Service;
 
+import com.example.tripease.DTO.CustomerLoyaltyScore;
 import com.example.tripease.DTO.Request.CustomerRequest;
 import com.example.tripease.DTO.Response.CustomerResponse;
 import com.example.tripease.Enum.Gender;
@@ -94,5 +95,9 @@ public class CustomerService {
         driverRepository.save(driver);
         bookingRepository.save(booking);
         return CustomerTransformer.customerToCutomerResponse(customerRepository.findByCustomerId(customerId));
+    }
+
+    public List<CustomerLoyaltyScore> getCustomerLoyaltyScore() {
+        return customerRepository.getCustomerLoyaltyScore();
     }
 }
