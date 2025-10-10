@@ -1,5 +1,6 @@
 package com.example.tripease.Controller;
 
+import com.example.tripease.DTO.BestMatchDto;
 import com.example.tripease.DTO.Request.DriverRequest;
 import com.example.tripease.DTO.Response.DriverResponse;
 import com.example.tripease.DTO.TopDriverDto;
@@ -39,5 +40,15 @@ public class DriverController {
             @PathVariable("daysInPast") int daysInPast) {
         List<TopDriverDto> topDrivers = driverService.getTopEarnersNative(topN, daysInPast);
         return new ResponseEntity<>(topDrivers, HttpStatus.OK);
+    }
+
+    @PostMapping("/swap-cab/{driverId}/{newCabId}")
+    public ResponseEntity<String> swapCab(@PathVariable("driverId") int driver_id,@PathVariable("newCabId") int newCab_id){
+        return new ResponseEntity<>(driverService.swapCab(driver_id,newCab_id),HttpStatus.OK);
+    }
+
+    @GetMapping("/best-match")
+    public ResponseEntity<BestMatchDto> bestMatch(){
+        return new ResponseEntity<>(driverService.bestMatch(),HttpStatus.OK);
     }
 }

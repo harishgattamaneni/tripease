@@ -1,5 +1,6 @@
 package com.example.tripease.Repository;
 
+import com.example.tripease.DTO.BestMatchDto;
 import com.example.tripease.DTO.TopDriverDto;
 import com.example.tripease.Model.Driver;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,4 +34,16 @@ public interface DriverRepository extends JpaRepository<Driver,Integer> {
             nativeQuery = true)
     List<TopDriverDto> findTopDriversNative(@Param("pastDate") Date pastDate,
                                             @Param("topN") int topN);
+
+    Optional<Driver> findByCabCabId(int newCabId);
+
+    @Query(value = "select driver.driver_id,driver.name,cab.per_km_rate,sum(trip_distance_in_km) as total_distance " +
+            "from driver " +
+            "join cab on cab.cab_id = driver.cab_id " +
+            "join booking on booking.driver_id = driver.driver_id " +
+            "where cab.available=1 " +
+            "group by driver.driver_id,driver.name,cab.per_km_rate " +
+            "order by cab.per_km_rate ASC, total_distance DESC " +
+            "limit 1",nativeQuery = true)
+    BestMatchDto bestMatch();
 }
