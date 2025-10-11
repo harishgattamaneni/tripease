@@ -1,5 +1,6 @@
 package com.example.tripease.Controller;
 
+import com.example.tripease.DTO.DetailsDto;
 import com.example.tripease.DTO.Request.BookingRequest;
 import com.example.tripease.DTO.Response.BookingResponse;
 import com.example.tripease.Model.Booking;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
@@ -31,6 +34,11 @@ public class BookingController {
     @GetMapping("/booking/pickup/nearest")
     public ResponseEntity<Booking> pickupNearest(@Valid @RequestBody BookingRequest bookingRequest){
         return new ResponseEntity<>(bookingService.pickupNearest(bookingRequest),HttpStatus.OK);
+    }
+
+    @GetMapping("/booking-details/projection/{customer_id}")
+    public ResponseEntity<List<DetailsDto>> bookingDetails(@PathVariable("customer_id") int customerId){
+        return new ResponseEntity<>(bookingService.bookingDetails(customerId),HttpStatus.OK);
     }
 
 }

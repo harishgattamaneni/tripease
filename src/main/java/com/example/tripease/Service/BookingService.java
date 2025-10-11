@@ -1,5 +1,6 @@
 package com.example.tripease.Service;
 
+import com.example.tripease.DTO.DetailsDto;
 import com.example.tripease.DTO.Request.BookingRequest;
 import com.example.tripease.DTO.Response.BookingResponse;
 import com.example.tripease.Enum.TripStatus;
@@ -161,5 +162,9 @@ public class BookingService {
             throw new NoNearestBooking("there is no recent trip to this particular location");
         }
         return nearestBooking.get();
+    }
+
+    public List<DetailsDto> bookingDetails(int customerId) {
+        return bookingRepository.getBookingDetails(customerId);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.tripease.Repository;
 
+import com.example.tripease.DTO.DetailsDto;
 import com.example.tripease.DTO.Request.BookingRequest;
 import com.example.tripease.Model.Booking;
 import jakarta.validation.Valid;
@@ -33,4 +34,9 @@ public interface BookingRepository extends JpaRepository<Booking,Integer> {
             "where destination = :pickup and trip_status ='Completed' " +
             "order by last_updated_at DESC" ,nativeQuery = true)
     List<Booking> pickupNearest(@Param("pickup") String pickup);
+
+    @Query(value = "select pickup, destination,bill_amount " +
+            "from booking " +
+            "where customer_id= :customerId",nativeQuery = true)
+    List<DetailsDto> getBookingDetails(@Param("customerId") int customerId);
 }
