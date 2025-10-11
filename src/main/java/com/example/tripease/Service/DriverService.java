@@ -94,4 +94,11 @@ public class DriverService {
         }
         return "driver is safe deleted";
     }
+
+    public List<String> noActivityDrivers(int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_YEAR, -days);
+        Date pastDate = cal.getTime();
+        return driverRepository.noActivityDrivers(pastDate);
+    }
 }

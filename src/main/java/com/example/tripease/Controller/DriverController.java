@@ -56,4 +56,9 @@ public class DriverController {
     public ResponseEntity<String> deleteDriver(@PathVariable("driver_id") int driver_id){
         return new ResponseEntity<>(driverService.deleteDriver(driver_id),HttpStatus.OK);
     }
+
+    @GetMapping("/no-activity/{days}")
+    public ResponseEntity<List<String>> noActivityDrivers(@PathVariable("days") int days){
+        return new ResponseEntity<>(driverService.noActivityDrivers(days),HttpStatus.OK);
+    }
 }

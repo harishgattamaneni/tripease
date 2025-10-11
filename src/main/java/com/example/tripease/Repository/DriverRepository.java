@@ -49,4 +49,12 @@ public interface DriverRepository extends JpaRepository<Driver,Integer> {
 
     @Query(value = "select cab_id from driver where driver_id= :driverId",nativeQuery = true)
     int getCabId(@Param("driverId") int driverId);
+
+    @Query(value = "SELECT d.name " +
+            "FROM driver d " +
+            "LEFT JOIN booking b ON d.driver_id = b.driver_id AND b.booked_at > :pastDate " +
+            "GROUP BY d.name, d.driver_id " +
+            "HAVING COUNT(b.booking_id) = 0 OR SUM(CASE WHEN b.trip_status <> 'Cancelled' THEN 1 ELSE 0 END) = 0",
+            nativeQuery = true)
+    List<String> noActivityDrivers(Date pastDate);
 }
