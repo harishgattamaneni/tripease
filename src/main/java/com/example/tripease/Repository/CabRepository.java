@@ -1,6 +1,7 @@
 package com.example.tripease.Repository;
 
 import com.example.tripease.DTO.PopularCabModelDto;
+import com.example.tripease.DTO.RateRangeDto;
 import com.example.tripease.Model.Cab;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Repository
@@ -26,4 +28,11 @@ public interface CabRepository extends JpaRepository<Cab,Integer> {
             "order by totalDistance DESC " +
             "limit 1",nativeQuery = true)
     PopularCabModelDto getPopularCarModel(@Param("pastDate") Date pastDate);
+
+    @Query(value = "select cab.cab_model,cab.cab_number,cab.per_km_rate,driver.name,driver.age " +
+            "from cab " +
+            "join driver on cab.cab_id=driver.cab_id " +
+            "where cab.per_km_rate>= :minRate and cab.per_km_rate<= :maxRate " +
+            "order by driver.age",nativeQuery = true)
+    List<RateRangeDto> getRateRange(@Param("minRate") int minRate,@Param("maxRate") int maxRate);
 }

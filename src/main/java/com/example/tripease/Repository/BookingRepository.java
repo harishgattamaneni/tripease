@@ -1,6 +1,8 @@
 package com.example.tripease.Repository;
 
+import com.example.tripease.DTO.Request.BookingRequest;
 import com.example.tripease.Model.Booking;
+import jakarta.validation.Valid;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,4 +28,9 @@ public interface BookingRepository extends JpaRepository<Booking,Integer> {
 
     @Query(value = "SELECT count(*) from booking where driver_id = :driver_id and trip_status ='Ongoing'",nativeQuery = true)
     int findBookingsByDriverId(@Param("driver_id") int driverId);
+
+    @Query(value="select * from booking " +
+            "where destination = :pickup and trip_status ='Completed' " +
+            "order by last_updated_at DESC" ,nativeQuery = true)
+    List<Booking> pickupNearest(@Param("pickup") String pickup);
 }

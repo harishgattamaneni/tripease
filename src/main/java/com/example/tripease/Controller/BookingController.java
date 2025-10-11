@@ -2,6 +2,7 @@ package com.example.tripease.Controller;
 
 import com.example.tripease.DTO.Request.BookingRequest;
 import com.example.tripease.DTO.Response.BookingResponse;
+import com.example.tripease.Model.Booking;
 import com.example.tripease.Service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ public class BookingController {
     @PostMapping("/cancel-booking/bookingId/{bookingId}")
     public ResponseEntity<String> cancelBooking(@PathVariable("bookingId") int bookingId){
         return new ResponseEntity<>(bookingService.cancelBooking(bookingId), HttpStatus.OK);
+    }
+
+    @GetMapping("/booking/pickup/nearest")
+    public ResponseEntity<Booking> pickupNearest(@Valid @RequestBody BookingRequest bookingRequest){
+        return new ResponseEntity<>(bookingService.pickupNearest(bookingRequest),HttpStatus.OK);
     }
 
 }

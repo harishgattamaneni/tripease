@@ -1,6 +1,7 @@
 package com.example.tripease.Service;
 
 import com.example.tripease.DTO.PopularCabModelDto;
+import com.example.tripease.DTO.RateRangeDto;
 import com.example.tripease.DTO.Request.CabRequest;
 import com.example.tripease.DTO.Response.CabResponse;
 import com.example.tripease.Exception.DriverNotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import static com.example.tripease.Transformers.CabTransformer.cabRequestToCab;
 import static com.example.tripease.Transformers.CabTransformer.cabToCabResponse;
@@ -47,5 +49,9 @@ public class CabService {
         cal.add(Calendar.DAY_OF_YEAR, -days);
         Date pastDate = cal.getTime();
         return cabRepository.getPopularCarModel(pastDate);
+    }
+
+    public List<RateRangeDto> getRateRange(int minRate, int maxRate) {
+        return cabRepository.getRateRange(minRate,maxRate);
     }
 }
