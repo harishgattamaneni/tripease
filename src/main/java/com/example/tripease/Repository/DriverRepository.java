@@ -63,4 +63,7 @@ public interface DriverRepository extends JpaRepository<Driver,Integer> {
             "HAVING COUNT(filtered_bookings.booking_id) = 0",
             nativeQuery = true)
     List<String> noActivityDrivers(@Param("pastDate") Date pastDate);
+
+    @Query(value = "select * from driver where cab_id is null", nativeQuery = true)
+    List<Driver> noAssignedCab();
 }

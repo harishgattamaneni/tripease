@@ -4,6 +4,7 @@ import com.example.tripease.DTO.PopularCabModelDto;
 import com.example.tripease.DTO.RateRangeDto;
 import com.example.tripease.DTO.Request.CabRequest;
 import com.example.tripease.DTO.Response.CabResponse;
+import com.example.tripease.Model.Cab;
 import com.example.tripease.Service.CabService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,10 @@ public class CabController {
     @GetMapping("/rate-range/{minRate}/{maxRate}")
     public ResponseEntity<List<RateRangeDto>> getRateRange(@PathVariable("minRate") int minRate, @PathVariable("maxRate") int maxRate){
         return new ResponseEntity<>(cabService.getRateRange(minRate,maxRate),HttpStatus.OK);
+    }
+
+    @GetMapping("/no-driver")
+    public ResponseEntity<List<Cab>> getNoDriver(){
+        return new ResponseEntity<>(cabService.getNoDriver(),HttpStatus.OK);
     }
 }

@@ -4,6 +4,7 @@ import com.example.tripease.DTO.BestMatchDto;
 import com.example.tripease.DTO.Request.DriverRequest;
 import com.example.tripease.DTO.Response.DriverResponse;
 import com.example.tripease.DTO.TopDriverDto;
+import com.example.tripease.Model.Driver;
 import com.example.tripease.Service.DriverService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +61,10 @@ public class DriverController {
     @GetMapping("/no-activity/{days}")
     public ResponseEntity<List<String>> noActivityDrivers(@PathVariable("days") int days){
         return new ResponseEntity<>(driverService.noActivityDrivers(days),HttpStatus.OK);
+    }
+
+    @GetMapping("/no-cab")
+    public ResponseEntity<List<Driver>> noAssignedCab(){
+        return new ResponseEntity<>(driverService.noAssignedCab(),HttpStatus.OK);
     }
 }

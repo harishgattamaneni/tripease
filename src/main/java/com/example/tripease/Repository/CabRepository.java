@@ -35,4 +35,9 @@ public interface CabRepository extends JpaRepository<Cab,Integer> {
             "where cab.per_km_rate>= :minRate and cab.per_km_rate<= :maxRate " +
             "order by driver.age",nativeQuery = true)
     List<RateRangeDto> getRateRange(@Param("minRate") int minRate,@Param("maxRate") int maxRate);
+
+
+    @Query(value = "select cab.cab_id,cab.available,cab.cab_model,cab.cab_number,cab.per_km_rate from cab left join driver on cab.cab_id=driver.cab_id " +
+            "where driver.driver_id is null",nativeQuery = true)
+    List<Cab> getNoDriver();
 }

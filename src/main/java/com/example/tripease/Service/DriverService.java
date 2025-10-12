@@ -101,4 +101,8 @@ public class DriverService {
         Date pastDate = cal.getTime();
         return driverRepository.noActivityDrivers(pastDate);
     }
+
+    public List<Driver> noAssignedCab() {
+        return driverRepository.noAssignedCab();
+    }
 }

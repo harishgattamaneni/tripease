@@ -54,4 +54,8 @@ public class CabService {
     public List<RateRangeDto> getRateRange(int minRate, int maxRate) {
         return cabRepository.getRateRange(minRate,maxRate);
     }
+
+    public List<Cab> getNoDriver() {
+        return cabRepository.getNoDriver();
+    }
 }
